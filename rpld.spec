@@ -28,7 +28,7 @@ RPLD jest implementacja protoko³u RIPL firmy IBM.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_sbindir},%{_sysconfdir}/{rc.d/init.d,sysconfig},%{_mandir}/man{5,8}}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_sbindir},%{_sysconfdir},/etc/{rc.d/init.d,sysconfig},%{_mandir}/man{5,8}}
 
 install {rpld,ana} $RPM_BUILD_ROOT%{_sbindir}
 install rpld.conf.sample $RPM_BUILD_ROOT%{_sysconfdir}/rpld.conf
@@ -46,7 +46,6 @@ if [ "$1" = "0" ]; then
 	fi
 	/sbin/chkconfig --del rpld
 fi
-
 
 %post
 /sbin/chkconfig --add rpld
@@ -67,5 +66,4 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_sbindir}/rpld
 %attr(755,root,root) %{_sbindir}/ana
 %attr(754,root,root) /etc/rc.d/init.d/rpld
-%{_mandir}/man5/*
-%{_mandir}/man8/*
+%{_mandir}/man[58]/*
