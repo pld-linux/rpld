@@ -1,0 +1,43 @@
+--- rpld-1.7/linux-nit.c.orig	2000-09-26 06:06:08.000000000 +0200
++++ rpld-1.7/linux-nit.c	2004-04-08 00:07:57.561514944 +0200
+@@ -69,6 +69,7 @@
+ 
+ #undef __GLIBC__
+ #include <linux/socket.h>
++#include <linux/sockios.h>
+ #include <linux/if_ether.h>
+ #include <linux/if_arp.h>
+ #include <linux/if_packet.h>
+=== workaround: file is incompatible with modern bisons, patch generated file
+xx --- rpld-1.7/rpld_conf.y.orig	2000-09-26 06:06:08.000000000 +0200
+xx +++ rpld-1.7/rpld_conf.y	2004-04-08 00:38:27.601306608 +0200
+xx @@ -304,7 +304,7 @@
+xx  			} else THROW_ERROR("Unknown directive");
+xx  		} else if (state == FILEBLOCK) {
+xx  			if (strsame(name,"linux")) {
+xx -				if (!cfi.have_path) THROW_ERROR("A path to a
+xx +				if (!cfi.have_path) THROW_ERROR("A path to a\
+xx  valid kernel must precede linux");
+xx  
+xx  				do_linux_kernel(pc,pcf);
+--- rpld-1.7/rpld_conf.tab.c.orig	2000-09-26 06:06:11.000000000 +0200
++++ rpld-1.7/rpld_conf.tab.c	2004-04-08 00:38:47.884223136 +0200
+@@ -349,7 +349,7 @@
+ 			} else THROW_ERROR("Unknown directive");
+ 		} else if (state == FILEBLOCK) {
+ 			if (strsame(name,"linux")) {
+-				if (!cfi.have_path) THROW_ERROR("A path to a
++				if (!cfi.have_path) THROW_ERROR("A path to a\
+ valid kernel must precede linux");
+ 
+ 				do_linux_kernel(pc,pcf);
+--- rpld-1.7/linux-old-nit.c.orig	2000-09-26 06:06:08.000000000 +0200
++++ rpld-1.7/linux-old-nit.c	2004-04-08 00:41:17.705446848 +0200
+@@ -41,6 +41,7 @@
+ 
+ #undef __GLIBC__
+ #include <linux/socket.h>
++#include <linux/sockios.h>
+ #include <linux/if_ether.h>
+ #include <linux/if_arp.h>
+ #include <linux/if_packet.h>
