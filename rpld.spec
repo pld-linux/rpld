@@ -37,7 +37,6 @@ install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/rpld
 install rpld.8 $RPM_BUILD_ROOT%{_mandir}/man8/
 install rpld.conf.5 $RPM_BUILD_ROOT%{_mandir}/man5/
 
-gzip -9nf README
 
 %preun
 if [ "$1" = "0" ]; then
@@ -60,7 +59,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc *.gz
+%doc README
 %config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/rpld.conf
 %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/rpld
 %attr(755,root,root) %{_sbindir}/rpld
