@@ -25,7 +25,7 @@ RPLD jest implementacja protoko³u RIPL firmy IBM.
 
 %build
 %{__make} depend
-%{__make} OPT="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O0 -g}"
+%{__make} OPT="%{rpmcflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
