@@ -2,7 +2,7 @@ Summary:	RPLD implements the IBM RIPL protocol
 Summary(pl):	RPLD jest implementacja protoko³u RIPL firmy IBM
 Name:		rpld
 Version:	1.7
-Release:	1
+Release:	2
 License:	GPL
 Group:		Networking/Daemons
 Group(de):	Netzwerkwesen/Server
@@ -12,6 +12,7 @@ Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://gimel.esc.cam.ac.uk/james/rpld/
 Prereq:		rc-scripts
+Prereq:		/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -40,8 +41,6 @@ install rpld.conf.5 $RPM_BUILD_ROOT%{_mandir}/man5/
 
 gzip -9nf README
 
-%pre
-
 %preun
 if [ "$1" = "0" ]; then
 	if [ -f /var/lock/subsys/rpld ]; then
@@ -58,8 +57,6 @@ if [ -f /var/lock/subsys/rpld ]; then
 else
 	echo "Run \"/etc/rc.d/init.d/rpld start\" to start RPL daemon."
 fi
-		
-%postun
 
 %clean
 rm -rf $RPM_BUILD_ROOT
