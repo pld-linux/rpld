@@ -10,8 +10,8 @@ Source0:	http://gimel.esc.cam.ac.uk/james/rpld/src/%{name}-%{version}.tar.gz
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://gimel.esc.cam.ac.uk/james/rpld/
-Prereq:		rc-scripts
-Prereq:		/sbin/chkconfig
+PreReq:		rc-scripts
+Requires(post,preun):	/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -25,7 +25,8 @@ RPLD jest implementacja protoko³u RIPL firmy IBM.
 
 %build
 %{__make} depend
-%{__make} OPT="%{rpmcflags}"
+%{__make} \
+	OPT="%{rpmcflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -35,17 +36,11 @@ install {rpld,ana} $RPM_BUILD_ROOT%{_sbindir}
 install rpld.conf.sample $RPM_BUILD_ROOT%{_sysconfdir}/rpld.conf
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/rpld
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/rpld
-install rpld.8 $RPM_BUILD_ROOT%{_mandir}/man8/
-install rpld.conf.5 $RPM_BUILD_ROOT%{_mandir}/man5/
+install rpld.8 $RPM_BUILD_ROOT%{_mandir}/man8
+install rpld.conf.5 $RPM_BUILD_ROOT%{_mandir}/man5
 
-
-%preun
-if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/rpld ]; then
-		/etc/rc.d/init.d/rpld stop 1>&2
-	fi
-	/sbin/chkconfig --del rpld
-fi
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/chkconfig --add rpld
@@ -55,8 +50,13 @@ else
 	echo "Run \"/etc/rc.d/init.d/rpld start\" to start RPL daemon."
 fi
 
-%clean
-rm -rf $RPM_BUILD_ROOT
+%preun
+if [ "$1" = "0" ]; then
+	if [ -f /var/lock/subsys/rpld ]; then
+		/etc/rc.d/init.d/rpld stop 1>&2
+	fi
+	/sbin/chkconfig --del rpld
+fi
 
 %files
 %defattr(644,root,root,755)
