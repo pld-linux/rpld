@@ -1,40 +1,44 @@
-Summary:	RPLD implements the IBM RIPL protocol.
+Summary:	RPLD implements the IBM RIPL protocol
 Summary(pl):	RPLD jest implementacja protoko³u RIPL firmy IBM
 Name:		rpld
 Version:	1.7
 Release:	1
 License:	GPL
 Group:		Networking/Daemons
+Group(de):	Netzwerkwesen/Server
 Group(pl):	Sieciowe/Serwery
-Source0:	%{name}-%{version}.tar.gz
-Source1:	rpld.init
-Source2:	rpld.sysconfig
-URL:		http://gimel.esc.cam.ac.uk/james/rpld
+Source0:	http://gimel.esc.cam.ac.uk/james/rpld/src/%{name}-%{version}.tar.gz
+Source1:	%{name}.init
+Source2:	%{name}.sysconfig
+URL:		http://gimel.esc.cam.ac.uk/james/rpld/
+Prereq:		rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
+rpld will net-boot IBM style RPL boot ROMs.
 
+%description -l pl
+RPLD jest implementacja protoko³u RIPL firmy IBM.
 
 %prep
 %setup  -q
 
 %build
 %{__make} depend
-%{__make}
+%{__make} OPT="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O0 -g}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_sbindir},%{_sysconfdir}/{rc.d/init.d,sysconfig},%{_mandir}/man{5,8}}
 
-install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_sbindir},/etc/{rc.d/init.d,sysconfig},%{_mandir}/man{5,8}}
-
-cp {rpld,ana} $RPM_BUILD_ROOT%{_sbindir}
-cp rpld.conf.sample $RPM_BUILD_ROOT%{_sysconfdir}/rpld.conf
+install {rpld,ana} $RPM_BUILD_ROOT%{_sbindir}
+install rpld.conf.sample $RPM_BUILD_ROOT%{_sysconfdir}/rpld.conf
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/rpld
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/rpld
-cp rpld.8 $RPM_BUILD_ROOT%{_mandir}/man8
-cp rpld.conf.5 $RPM_BUILD_ROOT%{_mandir}/man5
+install rpld.8 $RPM_BUILD_ROOT%{_mandir}/man8/
+install rpld.conf.5 $RPM_BUILD_ROOT%{_mandir}/man5/
 
-gzip -9nf INSTALL LICENCE README
+gzip -9nf README
 
 %pre
 
@@ -62,13 +66,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
+%doc *.gz
 %config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/rpld.conf
 %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/rpld
 %attr(755,root,root) %{_sbindir}/rpld
 %attr(755,root,root) %{_sbindir}/ana
 %attr(754,root,root) /etc/rc.d/init.d/rpld
-
 %{_mandir}/man5/*
 %{_mandir}/man8/*
-
-%doc {INSTALL,LICENCE,README}.gz
