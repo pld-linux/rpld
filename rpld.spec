@@ -6,6 +6,7 @@ Release:	2
 License:	GPL
 Group:		Networking/Daemons
 Source0:	http://gimel.esc.cam.ac.uk/james/rpld/src/%{name}-%{version}.tar.gz
+# Source0-md5:	933e1bec097595c1a7bf805f9d735a5b
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://gimel.esc.cam.ac.uk/james/rpld/
