@@ -46,7 +46,7 @@ if [ "$1" = "0" ]; then
 	fi
 	/sbin/chkconfig --del rpld
 fi
-					
+
 
 %post
 /sbin/chkconfig --add rpld
