@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+# rpld		rpld
+#
+# chkconfig:	345 80 20
+#
+# description:	rpld 
+
+
+# Source function library
+. /etc/rc.d/init.d/functions
+
+# Get network config
+. /etc/sysconfig/network
+
+# Get service config
+[ -f /etc/sysconfig/rpld ] && . /etc/sysconfig/rpld
+
+# Check that networking is up.
+if [ "${NETWORKING}" = "no" ]; then
+	echo "WARNING: Networking is down. RPLD can't be runed."
+	exit 1
+fi
+
+if [ "${INTERFACE}" != "" ]; then
+        OPTS=" -i $INTERFACE"
+fi
+	
+# See how we were called.
+case "$1" in
+  start)
+	# Check if the service is already running?
+	if [ ! -f /var/lock/subsys/rpld ]; then
+		msg_starting RPLD
+		daemon rpld $OPTS
+	else
+		msg_Already_Running RPLD
+		exit 1
+	fi
+	touch /var/lock/subsys/rpld
+	;;
+  stop)
+	msg_stopping RPLD
+	killproc rpld
+	rm -f /var/run/rpld.pid
+	rm -f /var/lock/subsys/rpld
+	;;
+  restart|reload)
+	$0 stop
+	$0 start
+	;;
+  status)
+	status rpld
+	;;
+  *)
+	echo "Usage: $0 {start|stop|status|restart|reload}"
+	exit 1
+esac
+
+exit 0
+
