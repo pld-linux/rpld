@@ -2,13 +2,14 @@ Summary:	RPLD implements the IBM RIPL protocol
 Summary(pl):	RPLD jest implementacja protoko³u RIPL firmy IBM
 Name:		rpld
 Version:	1.7
-Release:	2
+Release:	3
 License:	GPL
 Group:		Networking/Daemons
 Source0:	http://gimel.esc.cam.ac.uk/james/rpld/src/%{name}-%{version}.tar.gz
 # Source0-md5:	933e1bec097595c1a7bf805f9d735a5b
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
+Patch0:		%{name}-build.patch
 URL:		http://gimel.esc.cam.ac.uk/james/rpld/
 PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
@@ -21,11 +22,13 @@ rpld will net-boot IBM style RPL boot ROMs.
 RPLD jest implementacja protoko³u RIPL firmy IBM.
 
 %prep
-%setup  -q
+%setup -q
+%patch0 -p1
 
 %build
 %{__make} depend
 %{__make} \
+	CC="%{__cc}" \
 	OPT="%{rpmcflags}"
 
 %install
