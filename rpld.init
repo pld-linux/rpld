@@ -17,14 +17,19 @@
 [ -f /etc/sysconfig/rpld ] && . /etc/sysconfig/rpld
 
 # Check that networking is up.
-if [ "${NETWORKING}" = "no" ]; then
-	echo "WARNING: Networking is down. RPLD can't be runed."
-	exit 1
+if is_yes "${NETWORKING}"; then
+	if [ ! -f /var/lock/subsys/network ]; then
+		msg_network_down RPLD
+		exit 1
+	fi
+else
+	exit 0
 fi
 
 if [ "${INTERFACE}" != "" ]; then
-        OPTS=" -i $INTERFACE"
+	OPTS=" -i $INTERFACE"
 fi
+
 	
 # See how we were called.
 case "$1" in
@@ -33,17 +38,22 @@ case "$1" in
 	if [ ! -f /var/lock/subsys/rpld ]; then
 		msg_starting RPLD
 		daemon rpld $OPTS
+		touch /var/lock/subsys/rpld
 	else
-		msg_Already_Running RPLD
+		msg_already_running RPLD
 		exit 1
 	fi
-	touch /var/lock/subsys/rpld
 	;;
   stop)
-	msg_stopping RPLD
-	killproc rpld
-	rm -f /var/run/rpld.pid
-	rm -f /var/lock/subsys/rpld
+	if [ -f /var/lock/subsys/rpld ]; then
+		msg_stopping RPLD
+		killproc rpld
+		rm -f /var/run/rpld.pid
+		rm -f /var/lock/subsys/rpld
+	else
+		msg_not_running RPLD
+		exit 1
+	fi
 	;;
   restart|reload)
 	$0 stop
@@ -53,9 +63,8 @@ case "$1" in
 	status rpld
 	;;
   *)
-	echo "Usage: $0 {start|stop|status|restart|reload}"
+	msg_usage "$0 {start|stop|restart|reload|status}"
 	exit 1
 esac
 
 exit 0
-
