@@ -40,11 +40,26 @@ install rpld.conf.5 $RPM_BUILD_ROOT%{_mandir}/man5/
 
 gzip -9nf README
 
-%post
-DESC="RPL daemon"; %chkconfig_add
+%pre
 
 %preun
-%chkconfig_del
+if [ "$1" = "0" ]; then
+	if [ -f /var/lock/subsys/rpld ]; then
+		/etc/rc.d/init.d/rpld stop 1>&2
+	fi
+	/sbin/chkconfig --del rpld
+fi
+					
+
+%post
+/sbin/chkconfig --add rpld
+if [ -f /var/lock/subsys/rpld ]; then
+	/etc/rc.d/init.d/rpld restart 1>&2
+else
+	echo "Run \"/etc/rc.d/init.d/rpld start\" to start RPL daemon."
+fi
+		
+%postun
 
 %clean
 rm -rf $RPM_BUILD_ROOT
