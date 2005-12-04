@@ -11,8 +11,8 @@ Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-build.patch
 URL:		http://gimel.esc.cam.ac.uk/james/rpld/
-PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
+Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -64,8 +64,8 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc README
-%config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/rpld.conf
-%config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/rpld
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/rpld.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/rpld
 %attr(755,root,root) %{_sbindir}/rpld
 %attr(755,root,root) %{_sbindir}/ana
 %attr(754,root,root) /etc/rc.d/init.d/rpld
