@@ -4,7 +4,7 @@
 #
 # chkconfig:	345 80 20
 #
-# description:	rpld 
+# description:	rpld
 
 
 # Source function library
@@ -30,7 +30,7 @@ if [ "${INTERFACE}" != "" ]; then
 	OPTS=" -i $INTERFACE"
 fi
 
-RETVAL=0	
+RETVAL=0
 # See how we were called.
 case "$1" in
   start)
