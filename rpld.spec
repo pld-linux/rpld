@@ -11,6 +11,7 @@ Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-build.patch
 URL:		http://gimel.esc.cam.ac.uk/james/rpld/
+BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -47,17 +48,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/chkconfig --add rpld
-if [ -f /var/lock/subsys/rpld ]; then
-	/etc/rc.d/init.d/rpld restart 1>&2
-else
-	echo "Run \"/etc/rc.d/init.d/rpld start\" to start RPL daemon."
-fi
+%service rpld restart "RPL daemon"
 
 %preun
 if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/rpld ]; then
-		/etc/rc.d/init.d/rpld stop 1>&2
-	fi
+	%service rpld stop
 	/sbin/chkconfig --del rpld
 fi
 
