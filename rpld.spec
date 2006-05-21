@@ -2,7 +2,7 @@ Summary:	RPLD implements the IBM RIPL protocol
 Summary(pl):	RPLD jest implementacja protoko³u RIPL firmy IBM
 Name:		rpld
 Version:	1.7
-Release:	3
+Release:	4
 License:	GPL
 Group:		Networking/Daemons
 Source0:	http://gimel.esc.cam.ac.uk/james/rpld/src/%{name}-%{version}.tar.gz
