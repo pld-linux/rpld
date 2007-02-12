@@ -1,5 +1,5 @@
 Summary:	RPLD implements the IBM RIPL protocol
-Summary(pl):	RPLD jest implementacja protoko≥u RIPL firmy IBM
+Summary(pl.UTF-8):   RPLD jest implementacja protoko≈Çu RIPL firmy IBM
 Name:		rpld
 Version:	1.7
 Release:	4
@@ -19,8 +19,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 rpld will net-boot IBM style RPL boot ROMs.
 
-%description -l pl
-RPLD jest implementacja protoko≥u RIPL firmy IBM.
+%description -l pl.UTF-8
+RPLD jest implementacja protoko≈Çu RIPL firmy IBM.
 
 %prep
 %setup -q
