@@ -1,5 +1,5 @@
 Summary:	RPLD implements the IBM RIPL protocol
-Summary(pl.UTF-8):   RPLD jest implementacja protokołu RIPL firmy IBM
+Summary(pl.UTF-8):	RPLD jest implementacja protokołu RIPL firmy IBM
 Name:		rpld
 Version:	1.7
 Release:	4
